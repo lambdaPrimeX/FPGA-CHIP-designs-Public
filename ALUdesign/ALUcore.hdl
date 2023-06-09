@@ -1,0 +1,33 @@
+CHIP ALUcore
+{
+	IN a[4], b[4], carryIn, sums, ands, xors, ors;
+	OUT out[4], carryOut;
+
+PARTS:
+/*	     PRE-PROCCESSING		*/	
+/*	Add4C(a=a,b=b,carryIn=carryIn,carryOut=carryOut,out=fAdd);
+	And4(a=a,b=b,out=fAnd);
+	Xor4(a=a,b=b,out=fXor);
+	Or4(a=a,b=b,out=fOr);
+*/	
+	
+	Mux4(a=false,b=a,sel=true,out=fm1);
+	Mux4(a=false,b=b,sel=true,out=fm2);
+
+	Add4C(a=fm1,b=fm2,carryIn=carryIn,carryOut=supress,out=fadd);
+	Mux(a=false,b=supress,sel=sums,out=carryOut);
+	And4(a=fm2,b=fm1,out=fand);
+
+
+	Xor4(a=fm1,b=fm2,out=fxor);
+	Or4(a=fm2,b=fm1,out=for);
+
+
+	Mux4(a=fadd,b=fand,sel=ands,out=fm3);
+	Mux4(a=fxor,b=for,sel=ors,out=fm4);
+
+	Xor(a=xors,b=ors,out=fsel);
+
+	Mux4(a=fm3,b=fm4,sel=fsel,out=out);
+
+}

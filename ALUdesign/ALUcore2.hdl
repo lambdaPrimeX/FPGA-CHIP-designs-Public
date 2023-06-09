@@ -1,0 +1,30 @@
+CHIP ALUcore
+{
+	IN a[4], b[4], carryIn, sums, ands, xors, ors;
+	OUT out[4], carryOut;
+
+PARTS:
+/*		SELECTION		*/
+	Xor(a=sums,b=ands,out=fx1);		/*	X.Add and And	*/
+	Xor(a=xors,b=ors,out=fx2);		/*	Y.Xor and Or	*/
+	Xor(a=fx1,b=fx2,out=fx3);		/*	X or Y 		*/
+
+/*	     PRE-PROCCESSING		*/	
+	Add4C(a=a,b=b,carryIn=carryIn,carryOut=carryOut,out=fAdd);
+	And4(a=a,b=b,out=fAnd);
+	Mux4(a=fAdd,b=fAnd,sel=fx1,out=fAddAnd);
+
+	Xor4(a=a,b=b,out=fXor);
+	Or4(a=a,b=b,out=fOr);
+	Mux4(a=fXor,b=fOr,sel=fx2,out=fXorOr);
+
+	Mux4(a=fAddAnd,b=fXorOr,sel=fx3,out=out);
+	
+	
+	
+	
+	
+	
+	
+	
+}

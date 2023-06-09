@@ -1,0 +1,40 @@
+CHIP ALUChopper
+{
+    IN in[8], aLoad, bLoad, hiLo;
+    OUT aHiLo[4], bHiLo[4]/*,by0,by1,by2,by3,by4,by5,by6,by7*/;
+
+
+PARTS:
+/*Register8(in=in,load=aLoad,out=inA);*/
+	Bit(in=in[0],out=inA0,load=aLoad);
+	Bit(in=in[1],out=inA1,load=aLoad);
+	Bit(in=in[2],out=inA2,load=aLoad);
+	Bit(in=in[3],out=inA3,load=aLoad);
+	Bit(in=in[4],out=inA4,load=aLoad);
+	Bit(in=in[5],out=inA5,load=aLoad);
+	Bit(in=in[6],out=inA6,load=aLoad);
+	Bit(in=in[7],out=inA7,load=aLoad);
+
+/*Register8(in=in,load=bLoad,out=inB);*/
+	Bit(in=in[0],out=inB0,load=bLoad);
+	Bit(in=in[1],out=inB1,load=bLoad);
+	Bit(in=in[2],out=inB2,load=bLoad);
+	Bit(in=in[3],out=inB3,load=bLoad);
+	Bit(in=in[4],out=inB4,load=bLoad);
+	Bit(in=in[5],out=inB5,load=bLoad);
+	Bit(in=in[6],out=inB6,load=bLoad);
+	Bit(in=in[7],out=inB7,load=bLoad);
+
+	Mux(a=inA0,b=inA4,sel=hiLo,out=aHiLo[0]);
+	Mux(a=inA1,b=inA5,sel=hiLo,out=aHiLo[1]);
+	Mux(a=inA2,b=inA6,sel=hiLo,out=aHiLo[2]);
+	Mux(a=inA3,b=inA7,sel=hiLo,out=aHiLo[3]);
+
+	Mux(a=inB0,b=inB4,sel=hiLo,out=bHiLo[0]);
+	Mux(a=inB1,b=inB5,sel=hiLo,out=bHiLo[1]);
+	Mux(a=inB2,b=inB6,sel=hiLo,out=bHiLo[2]);
+	Mux(a=inB3,b=inB7,sel=hiLo,out=bHiLo[3]);
+	
+/*		STORE		*/	/*	missing half of the number, being replaced with false (0)'s	*/
+
+}

@@ -1,0 +1,55 @@
+CHIP ALUProcess
+{
+    IN a[4], b[4], sums, ands, xors, ors, hiLo, resLoad, carryIn;
+    OUT out[8], carryOut;
+
+
+PARTS:
+	/*Trigger for lo storage*/
+	Not(in=hiLo,out=nHiLo);
+	And(a=nHiLo,b=resLoad,out=loHiTRIG);
+
+	And(a=resLoad,b=hiLo,out=TRIG);
+
+	/*CORE*/
+	ALUcore(a=a,b=b,carryIn=carryInALU,sums=sums,ands=ands,xors=xors,ors=ors,out[0]=ALU0,out[1]=ALU1,out[2]=ALU2,out[3]=ALU3,carryOut=carryOutSel);
+	
+	/*CarryInBUFFER*/	
+	Bit(in=carryOutSel,load=resLoad,out=carryTmin1);
+	Mux(a=carryIn,b=carryTmin1,sel=hiLo,out=carryInALU);
+
+/*	Bit(in=carryInALU,load=hiLo,out=carryOut);*/
+	Bit(in=carryInALU,load=hiLo,out=carryOut1);
+	Mux(a=carryOut1,b=carryOutSel,sel=TRIG,out=carryOut2);
+	Bit(in=carryOut2,load=hiLo,out=carryOut);
+
+	/*	REG 4's	*/
+	DMux(in=ALU0,a=ab0,b=ab4,sel=hiLo);
+	DMux(in=ALU1,a=ab1,b=ab5,sel=hiLo);
+	DMux(in=ALU2,a=ab2,b=ab6,sel=hiLo);
+	DMux(in=ALU3,a=ab3,b=ab7,sel=hiLo);
+
+	/*	PHASE 1		*/
+/*REG1a*/Bit(in=ab0,load=loHiTRIG,out=out[0]);
+/*REG1a*/Bit(in=ab1,load=loHiTRIG,out=out[1]);
+/*REG1a*/Bit(in=ab2,load=loHiTRIG,out=out[2]);
+/*REG1a*/Bit(in=ab3,load=loHiTRIG,out=out[3]);
+
+	/*	PHASE 2		*/
+/*REG2a*/Bit(in=ab4,load=TRIG,out=out[4]);
+/*REG2a*/Bit(in=ab5,load=TRIG,out=out[5]);
+/*REG2a*/Bit(in=ab6,load=TRIG,out=out[6]);
+/*REG2a*/Bit(in=ab7,load=TRIG,out=out[7]);
+
+	/*	erroneous code		*/
+	/*	PHASE 1:	 STR	*/
+	/*Register8(in[0]=P10,in[1]=P11,in[2]=P12,in[3]=P13,in[4]=P20,in[5]=P21,in[6]=P22,in[7]=P23,load=resLoad,out=out);*/
+
+
+
+
+
+
+
+
+}

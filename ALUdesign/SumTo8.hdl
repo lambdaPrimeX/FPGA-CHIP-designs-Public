@@ -1,0 +1,29 @@
+CHIP SumTo8
+{
+        IN a[4], b[4];
+        OUT out[8];
+
+PARTS:
+
+/*	INVERSION	*/
+	Not(in=a[0],out=nA0);
+	Not(in=a[1],out=nA1);
+	Not(in=a[2],out=nA2);
+	Not(in=a[3],out=nA3);
+
+	Not(in=b[0],out=nB0);
+	Not(in=b[1],out=nB1);
+	Not(in=b[2],out=nB2);
+	Not(in=b[3],out=nB3);
+
+/*	INVERSION	*/
+	Not(in=nA0,out=out[4]);
+	Not(in=nA1,out=out[5]);
+	Not(in=nA2,out=out[6]);
+	Not(in=nA3,out=out[7]);
+
+	Not(in=nB0,out=out[0]);
+	Not(in=nB1,out=out[1]);
+	Not(in=nB2,out=out[2]);
+	Not(in=nB3,out=out[3]);
+}
